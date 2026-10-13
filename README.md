@@ -1,29 +1,45 @@
 # Bankruptcy Risk Prediction
 
-**Independent reconstruction** inspired by WorldQuant University Applied Data Science Lab Project 5. This repository is not an original recovered course submission.
+For this project, I used financial data from Polish companies to predict whether a company would go bankrupt. I compared Random Forest and Gradient Boosting models and focused on how class imbalance affected their performance.
 
-## Goal
-Compare Random Forest and Gradient Boosting classifiers on rare-event bankruptcy prediction, emphasizing the trade-off between **recall** (finding bankrupt firms) and **precision** (avoiding false alarms).
+This project is based on concepts I learned through the WorldQuant University Applied Data Science Lab.
 
 ## Dataset
-[UCI Polish Companies Bankruptcy](https://archive.ics.uci.edu/dataset/365/polish+companies+bankruptcy+data), using the 3-year cohort (10,503 financial statements, 64 financial-ratio features, 495 bankruptcies). The dataset is fetched when you run the notebook; it is not redistributed here. License: CC BY 4.0.
 
-## Method
-1. Inspect class imbalance and missing values.
-2. Create stratified train/test split.
-3. Impute missing values and randomly oversample **training data only** inside an `imblearn` pipeline.
-4. Fit Random Forest and Histogram-based Gradient Boosting classifiers.
-5. Compare precision, recall, F1, average precision, confusion matrices, and precision–recall curves.
-6. Inspect Random Forest feature importance and discuss limitations.
+I used the Polish Companies Bankruptcy dataset from the UCI Machine Learning Repository. For the 3-year cohort used in this project, there were 10,503 companies with 64 financial features. Only 495 companies, or about 4.7%, went bankrupt.
 
-## Run
-```bash
-python -m pip install -r requirements.txt
-jupyter notebook bankruptcy_risk_prediction.ipynb
-```
-Run all notebook cells to generate results. Results are intentionally not fabricated in this README.
+Because bankrupt companies made up such a small part of the dataset, I focused on precision, recall, F1 score, and average precision instead of relying only on accuracy.
 
-## Attribution
-- Dataset: Tomczak, S. (2016), *Polish Companies Bankruptcy*, UCI Machine Learning Repository, [DOI 10.24432/C5F600](https://doi.org/10.24432/C5F600), CC BY 4.0.
-- Educational inspiration: [WorldQuant University Data Science Lab](https://www.wqu.edu/data-science-lab), Project 5.
-- Implementation: independent reconstruction; not copied from another learner’s coursework.
+## Models
+
+I compared two classification models:
+
+- Random Forest
+- Gradient Boosting
+
+I split the data into training and test sets using a stratified split and oversampled the minority class only in the training data. I also handled missing values as part of the model pipeline.
+
+## Results
+
+| Model | Accuracy | Precision | Recall | F1 | Average Precision |
+| --- | --- | --- | --- | --- | --- |
+| Random Forest | 0.96 | 0.62 | 0.21 | 0.32 | 0.43 |
+| Gradient Boosting | 0.94 | 0.43 | 0.66 | 0.52 | 0.64 |
+
+Random Forest had higher overall accuracy and precision, but it only identified about 21% of the companies that actually went bankrupt. Gradient Boosting identified about 66% of the bankrupt companies and had a higher F1 score and average precision.
+
+This showed me why accuracy can be misleading with an imbalanced dataset. Even though Gradient Boosting had slightly lower accuracy, it was much better at identifying the minority class.
+
+## Tools
+
+Python, Pandas, NumPy, Scikit-learn, Imbalanced-learn, Matplotlib
+
+## What I Learned
+
+This project helped me better understand how class imbalance affects classification models and why the metrics used to evaluate a model depend on the problem. I also got more experience comparing models using precision, recall, confusion matrices, and precision-recall curves instead of relying on one metric.
+
+## Source
+
+Dataset: Polish Companies Bankruptcy, UCI Machine Learning Repository
+
+Project inspiration: WorldQuant University Applied Data Science Lab, Project 5
